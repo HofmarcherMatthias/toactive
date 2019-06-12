@@ -113,6 +113,4 @@ class EditSampleFragment : DialogFragment() {
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }
-
-
 }

@@ -10,50 +10,60 @@
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_edit_title"
+                android:id="@+id/tv_title"
                 android:text="EditSample"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
 
         />
 
         <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:id="@+id/tv_edit_description" android:layout_below="@id/tv_edit_title"/>
+                  android:id="@+id/tv_description" android:layout_below="@id/tv_title"/>
 
 
         <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_edit_description" android:id="@+id/rl_edit_datetime">
+                        android:layout_below="@id/tv_description" android:id="@+id/rl_datetime">
             <CalendarView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                          android:id="@+id/calv_edit_date"
+                          android:id="@+id/calv_date"
 
             >
 
             </CalendarView>
             <TimePicker android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:id="@+id/tp_edit_time"
-                        android:layout_below="@id/calv_edit_date" android:timePickerMode="spinner">
+                        android:id="@+id/tp_time"
+                        android:layout_below="@id/calv_date" android:timePickerMode="spinner">
 
             </TimePicker>
         </RelativeLayout>
 
         <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_below="@id/rl_edit_datetime">
+                        android:layout_below="@id/rl_datetime">
 
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/ll_">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Location"
-                          android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                          android:id="@+id/tv_edit_location"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                          android:id="@+id/ll_location-header"
+            >
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:text="Location"
+                          android:textAppearance="@style/TextAppearance.AppCompat.Title" android:layout_gravity="start"
+                          android:id="@+id/tv_location-header_title"
+                />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:layout_gravity="end"
+                          android:id="@+id/tv_location-header_current"
+                />
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:layout_below="@id/tv_edit_location">
+                          android:id="@+id/ll_location-body"
+                          android:layout_below="@id/ll_location-header">
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                          android:id="@+id/tv_edit_current" android:layout_gravity="start"
-                          />
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/btn_location-body_see" android:layout_gravity="start"
+                        android:text="See"
+                />
 
                 <Button android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:text="Change"
-                        android:layout_gravity="end"/>
+                        android:layout_gravity="end" android:id="@+id/btn_location-body_change"/>
             </LinearLayout>
 
         </RelativeLayout>

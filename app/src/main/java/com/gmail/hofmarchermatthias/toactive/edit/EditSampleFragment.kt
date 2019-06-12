@@ -3,6 +3,7 @@ package com.gmail.hofmarchermatthias.toactive.edit
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_edit_sample.*
 
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PATH = "path"
 
@@ -59,6 +59,7 @@ class EditSampleFragment : DialogFragment() {
             path = it.getString(ARG_PATH)
         }
 
+
         if(path != null){
             FirebaseFirestore.getInstance().document(path!!).get().addOnSuccessListener{
                 onHostAppointmentFetched(it.toObject(Appointment::class.java)!!)
@@ -67,12 +68,12 @@ class EditSampleFragment : DialogFragment() {
     }
 
     private fun onHostAppointmentFetched(hA: Appointment) {
-        tv_edit_title.text = hA.title
-        tv_edit_description.text = hA.description
+        tv_title.setText(hA.title)
+        tv_description.setText(hA.description)
         if(hA.location != null){
-            tv_edit_coordinates.text = hA.location.toString()
+            tv_location_header_current.text = hA.location.toString()
         }else{
-            tv_edit_coordinates.text = "No location set"
+            tv_location_header_current.text = "No location set"
         }
     }
 

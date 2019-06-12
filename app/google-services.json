@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "922814091324",
+    "firebase_url": "https://toactivep.firebaseio.com",
+    "project_id": "toactivep",
+    "storage_bucket": "toactivep.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922814091324:android:d1f9029cb6088e0c",
+        "android_client_info": {
+          "package_name": "com.gmail.hofmarchermatthias.toactive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922814091324-ikfa500m8k7ptl6o2n1830tbsg0b9hv4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.hofmarchermatthias.toactive",
+            "certificate_hash": "5ddb7a9f4b2e7a8034ffef271860ebc32b0a72cc"
+          }
+        },
+        {
+          "client_id": "922814091324-ejpgoti5mh8pn8o66m74hm3mn5n4icf6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByuyhysyc0urSHi2xS6Nyzw6iKMvXFyIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922814091324-ejpgoti5mh8pn8o66m74hm3mn5n4icf6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922814091324:android:acd84060f563f342",
+        "android_client_info": {
+          "package_name": "com.gmail.hofmarchermatthias.toactive_p"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922814091324-5dt8nijllr6v0e44e7pd6j4abmf4ih9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.hofmarchermatthias.toactive_p",
+            "certificate_hash": "5ddb7a9f4b2e7a8034ffef271860ebc32b0a72cc"
+          }
+        },
+        {
+          "client_id": "922814091324-7uqv1ardmbfc2tgl12jljdqkjl5lvjp6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.hofmarchermatthias.toactive_p",
+            "certificate_hash": "d851cf77742fd75d9ed0029471f8b80d4f3deb6b"
+          }
+        },
+        {
+          "client_id": "922814091324-ejpgoti5mh8pn8o66m74hm3mn5n4icf6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByuyhysyc0urSHi2xS6Nyzw6iKMvXFyIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922814091324-ejpgoti5mh8pn8o66m74hm3mn5n4icf6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_entry"
+            app:startDestination="@id/listFragment">
+
+    <fragment android:id="@+id/listFragment" android:name="com.gmail.hofmarchermatthias.toactive.list.ListFragment"
+              android:label="fragment_list" tools:layout="@layout/fragment_list">
+        <action android:id="@+id/action_listFragment_to_editSampleFragment" app:destination="@id/editSampleFragment"
+        />
+    </fragment>
+    <action android:id="@+id/action_global_listFragment" app:destination="@id/listFragment"/>
+    <fragment android:id="@+id/mapFragment" android:name="com.gmail.hofmarchermatthias.toactive.map.MapFragment"
+              android:label="fragment_map" tools:layout="@layout/fragment_map"/>
+    <action android:id="@+id/action_global_mapFragment" app:destination="@id/mapFragment"/>
+    <fragment android:id="@+id/aboutFragment" android:name="com.gmail.hofmarchermatthias.toactive.about.AboutFragment"
+              android:label="fragment_about" tools:layout="@layout/fragment_about"/>
+    <action android:id="@+id/action_global_aboutFragment" app:destination="@id/aboutFragment"/>
+    <fragment android:id="@+id/editSampleFragment"
+              android:name="com.gmail.hofmarchermatthias.toactive.edit.EditSampleFragment"
+              android:label="fragment_edit_sample" tools:layout="@layout/fragment_edit_sample">
+        <argument android:name="path" app:argType="string"/>
+    </fragment>
+</navigation>

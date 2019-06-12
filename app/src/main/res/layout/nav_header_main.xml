@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/side_nav_bar"
+        android:padding="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+               android:id="@+id/imgv_nav_picture"
+
+               android:contentDescription="Profile Picture"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Not signed in"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:id="@+id/tv_nav_user"
+    />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your email should appear here"
+            android:id="@+id/tv_nav_email"/>
+
+</LinearLayout>

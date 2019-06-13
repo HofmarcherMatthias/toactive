@@ -46,7 +46,7 @@ class ListFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private val notebookRef = db.collection("Users")
         //.document(FirebaseAuth.getInstance().currentUser?.uid ?: "TestUser")
-        .document("TestUser")
+        .document(FirebaseAuth.getInstance().currentUser!!.uid)
         .collection("Data")
     //endregion database
 
@@ -71,7 +71,9 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fab_add_appointment.setOnClickListener {
-            Toast.makeText(this.context, "Feature not implemented", Toast.LENGTH_LONG).show()
+            val editSampleFragment = EditSampleFragment.newInstance("")
+            editSampleFragment.setTargetFragment(this@ListFragment, 1)
+            editSampleFragment.show(fragmentManager!!, "EditSampleFragment")
         }
 
 
@@ -149,20 +151,9 @@ class ListFragment : Fragment() {
         appointmentAdapter.onItemClickListener=(object :
             AppointmentAdapter.OnItemClickListener {
             override fun onItemClick(documentSnapshot: DocumentSnapshot, position: Int) {
-                val id = documentSnapshot.id
-
                 val editSampleFragment = EditSampleFragment.newInstance(documentSnapshot.reference.path)
                 editSampleFragment.setTargetFragment(this@ListFragment, 1)
                 editSampleFragment.show(fragmentManager!!, "EditSampleFragment")
-
-                //Toast.makeText(parentFragment?.context, "Not supported yet", Toast.LENGTH_LONG).show()
-
-
-                /*bundle.putString("path", path)
-                bundle.putString("id", id)
-                val intent = Intent(context, AppointmentSample::class.java)
-                intent.putExtras(bundle)
-                startActivity(intent)*/
             }
         })
     }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.gmail.hofmarchermatthias.toactive.R
 import com.gmail.hofmarchermatthias.toactive.model.Appointment
@@ -66,11 +67,12 @@ class EditSampleFragment : DialogFragment() {
             path = it.getString(ARG_PATH)
         }
 
-
-        if(path != null){
+        if(!path.isNullOrBlank()){
             FirebaseFirestore.getInstance().document(path!!).get().addOnSuccessListener{
                 onHostAppointmentFetched(it.toObject(Appointment::class.java)!!)
             }.addOnFailureListener{ Log.e(TAG, "HostDocument could not be fetched!")}
+        }else{
+            Toast.makeText(this.hostActivity, "Creating new Appointment", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_aboutFragment)
             }
             R.id.nav_share -> {
-
+                onShare()
             }
             R.id.nav_send -> {
 
@@ -159,6 +159,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun onShare() {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        val shareBody = "I am using a stable Version of 2active"
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "I am better than you")
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+        startActivity(Intent.createChooser(shareIntent, "Share this Information"))
+
     }
 
     override fun onFragmentInteraction(uri: Uri) {

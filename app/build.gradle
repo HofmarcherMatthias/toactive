@@ -60,6 +60,10 @@ dependencies {
 
     //Google Maps
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
+    //GMaps suchoX-PlacePicker
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation 'com.sucho:placepicker:0.1.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

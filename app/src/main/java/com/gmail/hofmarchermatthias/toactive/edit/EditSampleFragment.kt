@@ -1,6 +1,8 @@
 package com.gmail.hofmarchermatthias.toactive.edit
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +15,9 @@ import androidx.fragment.app.DialogFragment
 import com.gmail.hofmarchermatthias.toactive.R
 import com.gmail.hofmarchermatthias.toactive.model.Appointment
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sucho.placepicker.AddressData
+import com.sucho.placepicker.Constants
+import com.sucho.placepicker.PlacePicker
 import kotlinx.android.synthetic.main.fragment_edit_sample.*
 
 
@@ -32,6 +37,7 @@ class EditSampleFragment : DialogFragment() {
 
     private var path: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private var hostActivity: Activity? = null
 
     companion object {
         /**
@@ -51,6 +57,7 @@ class EditSampleFragment : DialogFragment() {
             }
 
         const val TAG="EditSampleFragment"
+        const val PLACE_PICKER_REQUEST=611
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +74,32 @@ class EditSampleFragment : DialogFragment() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_edit_sample, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context !is Activity){
+            throw RuntimeException(context.toString()+ " must be an Activity")
+        }
+
+        if (context !is OnFragmentInteractionListener) {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+        listener = context
+        hostActivity = context
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        btn_location_body_change.setOnClickListener{this.openPlacePicker()}
+    }
+
     private fun onHostAppointmentFetched(hA: Appointment) {
         tv_title.setText(hA.title)
         tv_description.setText(hA.description)
@@ -78,26 +111,43 @@ class EditSampleFragment : DialogFragment() {
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_sample, container, false)
+
+
+    private fun openPlacePicker() {
+        val intent = PlacePicker.IntentBuilder()
+            .setLatLong(40.748672, -73.985628)  // Initial Latitude and Longitude the Map will load into
+            .showLatLong(true)
+            .setMapZoom(12.0f)
+            .setAddressRequired(true) // Set If return only Coordinates if cannot fetch Address for the coordinates. Default: True
+            //.hideMarkerShadow(true)
+            //.setMarkerDrawable(R.drawable.marker)
+            .setMarkerImageImageColor(R.color.colorPrimary)
+            //.setFabColor(R.color.fabColor)
+            //.setPrimaryTextColor(R.color.primaryTextColor) // Change text color of Shortened Address
+            //.setSecondaryTextColor(R.color.secondaryTextColor) // Change text color of full Address
+            .build(hostActivity!!)
+        startActivityForResult(intent, PLACE_PICKER_REQUEST)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            PLACE_PICKER_REQUEST->onPlacePickerResult(resultCode, data)
+        }
+    }
+
+    private fun onPlacePickerResult(resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK){
+            val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
+            tv_location_header_current.text = addressData.toString()
+
         }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
+        hostActivity = null
     }
 
     /**

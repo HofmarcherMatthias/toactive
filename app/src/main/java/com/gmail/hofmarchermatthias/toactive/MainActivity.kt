@@ -27,6 +27,7 @@ import com.gmail.hofmarchermatthias.toactive.edit.EditSampleFragment
 import com.gmail.hofmarchermatthias.toactive.home.HomeFragment
 import com.gmail.hofmarchermatthias.toactive.list.ListFragment
 import com.gmail.hofmarchermatthias.toactive.map.MapFragment
+import com.gmail.hofmarchermatthias.toactive.settings.SettingsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -39,8 +40,9 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ListFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
-    AboutFragment.OnFragmentInteractionListener, EditSampleFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener {
-    private lateinit var navView: NavigationView
+    AboutFragment.OnFragmentInteractionListener, EditSampleFragment.OnFragmentInteractionListener,
+    HomeFragment.OnFragmentInteractionListener,
+    SettingsFragment.OnFragmentInteractionListener {
 
     companion object {
         const val RC_SIGN_IN = 501
@@ -61,18 +63,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        this.navView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView.setNavigationItemSelectedListener(this)
-
+        nav_view.setNavigationItemSelectedListener(this)
         //Firebase-Auth
         handleAuthentication()
+    }
 
+    private fun openSetting(): Boolean {
+        Toast.makeText(this, "", Toast.LENGTH_LONG).show()
+        Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_settingsFragment)
+        return true
     }
 
     private fun handleAuthentication() {
@@ -100,10 +105,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (resultCode == Activity.RESULT_OK) {
             val firebaeAuth = FirebaseAuth.getInstance()
             Log.d(TAG, "Signed in")
-            navView.getHeaderView(0).tv_nav_email.text = firebaeAuth.currentUser!!.email
-            navView.getHeaderView(0).tv_nav_user.text = firebaeAuth.currentUser!!.displayName
+            nav_view.getHeaderView(0).tv_nav_email.text = firebaeAuth.currentUser!!.email
+            nav_view.getHeaderView(0).tv_nav_user.text = firebaeAuth.currentUser!!.displayName
             Glide.with(this).load(firebaeAuth.currentUser!!.photoUrl.toString())
-                .into(navView.getHeaderView(0).imgv_nav_picture)
+                .into(nav_view.getHeaderView(0).imgv_nav_picture)
         } else {
             Log.e(TAG, "Could not log in User")
             finish()
@@ -130,7 +135,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                this.openSetting()
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -139,7 +146,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                Log.d(TAG, "Tried to open home")
+                Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_homeFragment)
             }
             R.id.nav_list -> {
                 Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_listFragment)

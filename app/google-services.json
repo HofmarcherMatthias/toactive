@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "922814091324-3hlqqgmm72vs8ebvtafmig7f2dusbk0j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.hofmarchermatthias.toactive",
+            "certificate_hash": "e953894e0da28fd7cc3ada679c54ed8334d20ade"
+          }
+        },
+        {
+          "client_id": "922814091324-6nfqomkoj5f5auo0jpmb4kt3oracemoi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.hofmarchermatthias.toactive",
+            "certificate_hash": "cb3a72210637324c6d5edcdb06096e03f6f86afe"
+          }
+        },
+        {
           "client_id": "922814091324-ikfa500m8k7ptl6o2n1830tbsg0b9hv4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

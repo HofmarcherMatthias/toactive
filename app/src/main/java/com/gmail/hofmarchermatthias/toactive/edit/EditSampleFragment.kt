@@ -154,12 +154,8 @@ class EditSampleFragment : DialogFragment() {
             .showLatLong(true)
             .setMapZoom(12.0f)
             .setAddressRequired(true) // Set If return only Coordinates if cannot fetch Address for the coordinates. Default: True
-            //.hideMarkerShadow(true)
-            //.setMarkerDrawable(R.drawable.marker)
+            .hideMarkerShadow(true)
             .setMarkerImageImageColor(R.color.colorPrimary)
-            //.setFabColor(R.color.fabColor)
-            //.setPrimaryTextColor(R.color.primaryTextColor) // Change text color of Shortened Address
-            //.setSecondaryTextColor(R.color.secondaryTextColor) // Change text color of full Address
             .build(hostActivity!!)
         startActivityForResult(intent, PLACE_PICKER_REQUEST)
     }

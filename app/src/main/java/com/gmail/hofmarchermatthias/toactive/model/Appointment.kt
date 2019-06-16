@@ -9,8 +9,6 @@ data class Appointment(
     var title: String,
     var description: String) {
     var location:GeoPoint? = null
-    get
-    set
 
     constructor():this(com.google.firebase.Timestamp(Date()), "", "")
 }

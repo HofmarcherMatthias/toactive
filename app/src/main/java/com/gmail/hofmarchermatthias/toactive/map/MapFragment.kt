@@ -54,7 +54,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 .collection("Data")
 
         collectionReference
-            .orderBy("timestamp", Query.Direction.ASCENDING).get()
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .get()
             .addOnSuccessListener {
                 for (document in it) {
                     val current = document.toObject(Appointment::class.java)
@@ -106,14 +107,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
 
     private fun openMapSettings() {
         Toast.makeText(this.context, "This feature is not implemented yet", Toast.LENGTH_LONG).show()
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun openMap() {

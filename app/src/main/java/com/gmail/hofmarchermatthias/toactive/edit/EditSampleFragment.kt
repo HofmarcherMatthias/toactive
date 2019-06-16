@@ -61,7 +61,7 @@ class EditSampleFragment : DialogFragment() {
                 }
             }
 
-        const val TAG="EditSampleFragment"
+        const val TAG = "EditSampleFragment"
         const val PLACE_PICKER_REQUEST=611
     }
 
@@ -74,7 +74,7 @@ class EditSampleFragment : DialogFragment() {
         this.collectionReference = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().uid!!).collection("Data")
 
 
-        if(id != null){
+        if(!id.isNullOrBlank()){
             collectionReference.document(id!!).get().addOnSuccessListener{
                 onHostAppointmentFetched(it.toObject(Appointment::class.java)!!)
             }.addOnFailureListener{ Log.e(TAG, "HostDocument could not be fetched!")}

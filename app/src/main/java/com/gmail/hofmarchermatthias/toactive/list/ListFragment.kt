@@ -40,7 +40,6 @@ class ListFragment : Fragment() {
     //region database
     private val db = FirebaseFirestore.getInstance()
     private val notebookRef = db.collection("Users")
-        //.document(FirebaseAuth.getInstance().currentUser?.uid ?: "TestUser")
         .document(FirebaseAuth.getInstance().uid!!)
         .collection("Data")
     //endregion database
@@ -146,7 +145,6 @@ class ListFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 }

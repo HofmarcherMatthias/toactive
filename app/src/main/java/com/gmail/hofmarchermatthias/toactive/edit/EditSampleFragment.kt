@@ -38,7 +38,7 @@ private const val ARG_ID = "id"
  */
 class EditSampleFragment : DialogFragment() {
 
-    private var addressData: AddressData? = null
+    private var location: GeoPoint? = null
     private lateinit var collectionReference: CollectionReference
     private var id: String? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -119,6 +119,7 @@ class EditSampleFragment : DialogFragment() {
         tv_title.setText(hA.title)
         tv_description.setText(hA.description)
         if(hA.location != null){
+            location = hA.location
             tv_location_header_current.text = hA.location.toString()
         }else{
             tv_location_header_current.text = "No location set"
@@ -141,10 +142,7 @@ class EditSampleFragment : DialogFragment() {
         appointment.title = tv_title.text.toString()
         appointment.description = tv_description.text.toString()
         appointment.timestamp = Timestamp.now()
-
-        if(addressData != null){
-            appointment.location = GeoPoint(addressData!!.latitude, addressData!!.longitude)
-        }
+        appointment.location = location
 
         return appointment
     }
@@ -175,8 +173,11 @@ class EditSampleFragment : DialogFragment() {
 
     private fun onPlacePickerResult(resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK){
-            this.addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
-            tv_location_header_current.text = addressData.toString()
+            val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
+
+            checkNotNull(addressData)
+            this.location = GeoPoint(addressData.latitude, addressData.longitude)
+            tv_location_header_current.text = location.toString()
 
         }
     }

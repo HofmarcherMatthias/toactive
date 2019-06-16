@@ -10,13 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.gmail.hofmarchermatthias.toactive.R
+import com.gmail.hofmarchermatthias.toactive.model.Appointment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_map.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,13 +40,31 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class MapFragment : Fragment(), OnMapReadyCallback {
+    private lateinit var collectionReference: CollectionReference
     private lateinit var mMap: GoogleMap
     private var listener: OnFragmentInteractionListener? = null
-
+    private val list = ArrayList<Appointment>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        this.collectionReference =
+            FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().uid!!)
+                .collection("Data")
+
+        collectionReference
+            .orderBy("timestamp", Query.Direction.ASCENDING).get()
+            .addOnSuccessListener {
+                for (document in it) {
+                    val current = document.toObject(Appointment::class.java)
+                    if(current.location != null){
+                        list.add(current)
+                    }
+                }
+            }.addOnFailureListener {
+                it.printStackTrace()
+            }
     }
 
     override fun onCreateView(
@@ -49,11 +73,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false)
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,16 +125,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-
-
         this.mMap = googleMap
 
-        val a = Address(Locale.GERMAN)
+        for (appointment in list) {
+            val latLng = LatLng(appointment.location!!.latitude, appointment.location!!.longitude)
+            mMap.addMarker(MarkerOptions().position(latLng).title(appointment.title).visible(true))
+        }
 
-
-        val sydney = com.google.android.gms.maps.model.LatLng(-34.0, 151.0)
-
-        mMap.addMarker(MarkerOptions().position(sydney).title("THis is fucking Sydney").visible(true))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(48.2553696,14.2586042)))
     }
 }

@@ -17,6 +17,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
@@ -37,6 +38,7 @@ private const val ARG_ID = "id"
  */
 class EditSampleFragment : DialogFragment() {
 
+    private var addressData: AddressData? = null
     private lateinit var collectionReference: CollectionReference
     private var id: String? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -140,6 +142,10 @@ class EditSampleFragment : DialogFragment() {
         appointment.description = tv_description.text.toString()
         appointment.timestamp = Timestamp.now()
 
+        if(addressData != null){
+            appointment.location = GeoPoint(addressData!!.latitude, addressData!!.longitude)
+        }
+
         return appointment
     }
 
@@ -169,7 +175,7 @@ class EditSampleFragment : DialogFragment() {
 
     private fun onPlacePickerResult(resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK){
-            val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
+            this.addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
             tv_location_header_current.text = addressData.toString()
 
         }

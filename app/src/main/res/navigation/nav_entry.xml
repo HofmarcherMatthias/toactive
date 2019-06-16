@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_entry"
-            app:startDestination="@id/listFragment">
+            app:startDestination="@id/homeFragment">
 
     <fragment android:id="@+id/listFragment" android:name="com.gmail.hofmarchermatthias.toactive.list.ListFragment"
               android:label="fragment_list" tools:layout="@layout/fragment_list">
@@ -21,4 +21,6 @@
               android:label="fragment_edit_sample" tools:layout="@layout/fragment_edit_sample">
         <argument android:name="path" app:argType="string"/>
     </fragment>
+    <fragment android:id="@+id/homeFragment" android:name="com.gmail.hofmarchermatthias.toactive.home.HomeFragment"
+              android:label="fragment_home" tools:layout="@layout/fragment_home"/>
 </navigation>

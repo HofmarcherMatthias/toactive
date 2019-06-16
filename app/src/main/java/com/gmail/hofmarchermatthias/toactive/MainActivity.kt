@@ -24,6 +24,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.firebase.ui.auth.data.model.User
 import com.gmail.hofmarchermatthias.toactive.about.AboutFragment
 import com.gmail.hofmarchermatthias.toactive.edit.EditSampleFragment
+import com.gmail.hofmarchermatthias.toactive.home.HomeFragment
 import com.gmail.hofmarchermatthias.toactive.list.ListFragment
 import com.gmail.hofmarchermatthias.toactive.map.MapFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -37,14 +38,11 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ListFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener, AboutFragment.OnFragmentInteractionListener,EditSampleFragment.OnFragmentInteractionListener
-    {
+    ListFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
+    AboutFragment.OnFragmentInteractionListener, EditSampleFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener {
     private lateinit var navView: NavigationView
 
-
-
-
-    companion object{
+    companion object {
         const val RC_SIGN_IN = 501
         const val TAG = "MainActivity"
     }
@@ -54,11 +52,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
 
         //Use Timestamps instead of Util.date
-        FirebaseFirestore.getInstance().firestoreSettings = FirebaseFirestoreSettings.Builder().setTimestampsInSnapshotsEnabled(true).build()
-
-        //Firebase-Auth
-        handleAuthentication()
-
+        FirebaseFirestore.getInstance().firestoreSettings =
+            FirebaseFirestoreSettings.Builder().setTimestampsInSnapshotsEnabled(true).build()
 
         setContentView(R.layout.activity_main)
 
@@ -74,6 +69,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        //Firebase-Auth
+        handleAuthentication()
 
     }
 
@@ -92,20 +90,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(requestCode){
-            RC_SIGN_IN-> onAuthResult(resultCode, data)
+        when (requestCode) {
+            RC_SIGN_IN -> onAuthResult(resultCode, data)
         }
     }
 
     private fun onAuthResult(resultCode: Int, data: Intent?) {
         //val response = IdpResponse.fromResultIntent(data)
-        if(resultCode== Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             val firebaeAuth = FirebaseAuth.getInstance()
             Log.d(TAG, "Signed in")
             navView.getHeaderView(0).tv_nav_email.text = firebaeAuth.currentUser!!.email
             navView.getHeaderView(0).tv_nav_user.text = firebaeAuth.currentUser!!.displayName
-            Glide.with(this).load(firebaeAuth.currentUser!!.photoUrl.toString()).into(navView.getHeaderView(0).imgv_nav_picture)
-        }else{
+            Glide.with(this).load(firebaeAuth.currentUser!!.photoUrl.toString())
+                .into(navView.getHeaderView(0).imgv_nav_picture)
+        } else {
             Log.e(TAG, "Could not log in User")
             finish()
         }
@@ -139,10 +138,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+            R.id.nav_home -> {
+                Log.d(TAG, "Tried to open home")
+            }
             R.id.nav_list -> {
                 Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_listFragment)
             }
-            R.id.nav_map->{
+            R.id.nav_map -> {
                 Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_mapFragment)
             }
 
@@ -162,6 +164,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.e(TAG, "Notified")
     }
 }

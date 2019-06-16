@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +13,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.gmail.hofmarchermatthias.toactive.R
 import com.gmail.hofmarchermatthias.toactive.model.Appointment
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
@@ -22,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_edit_sample.*
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PATH = "path"
+private const val ARG_ID = "id"
 
 /**
  * A simple [Fragment] subclass.
@@ -35,7 +37,8 @@ private const val ARG_PATH = "path"
  */
 class EditSampleFragment : DialogFragment() {
 
-    private var path: String? = null
+    private lateinit var collectionReference: CollectionReference
+    private var id: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private var hostActivity: Activity? = null
 
@@ -44,15 +47,15 @@ class EditSampleFragment : DialogFragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param path Parameter 1.
+         * @param id
          * @return A new instance of fragment EditSampleFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(path: String) =
+        fun newInstance(id: String) =
             EditSampleFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PATH, path)
+                    putString(ARG_ID, id)
                 }
             }
 
@@ -63,12 +66,14 @@ class EditSampleFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            path = it.getString(ARG_PATH)
+            id = it.getString(ARG_ID)
         }
 
+        this.collectionReference = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().uid!!).collection("Data")
 
-        if(path != null){
-            FirebaseFirestore.getInstance().document(path!!).get().addOnSuccessListener{
+
+        if(id != null){
+            collectionReference.document(id!!).get().addOnSuccessListener{
                 onHostAppointmentFetched(it.toObject(Appointment::class.java)!!)
             }.addOnFailureListener{ Log.e(TAG, "HostDocument could not be fetched!")}
         }
@@ -80,6 +85,17 @@ class EditSampleFragment : DialogFragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_sample, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //On ClickEvents
+        btn_location_body_change.setOnClickListener{this.openPlacePicker()}
+        btn_save.setOnClickListener{
+            this.save()
+            dismiss()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -95,10 +111,7 @@ class EditSampleFragment : DialogFragment() {
         hostActivity = context
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        btn_location_body_change.setOnClickListener{this.openPlacePicker()}
-    }
+
 
     private fun onHostAppointmentFetched(hA: Appointment) {
         tv_title.setText(hA.title)
@@ -110,7 +123,25 @@ class EditSampleFragment : DialogFragment() {
         }
     }
 
+    private fun save(){
+        val appointment = makeAppointmentFromInput()
 
+        if(id.isNullOrBlank()){
+            collectionReference.add(appointment)
+        }else{
+            val documentReference = collectionReference.document(id!!)
+            documentReference.set(appointment)
+        }
+    }
+
+    private fun makeAppointmentFromInput(): Appointment {
+        val appointment = Appointment()
+        appointment.title = tv_title.text.toString()
+        appointment.description = tv_description.text.toString()
+        appointment.timestamp = Timestamp.now()
+
+        return appointment
+    }
 
 
     private fun openPlacePicker() {

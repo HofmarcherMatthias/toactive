@@ -36,6 +36,7 @@
         </RelativeLayout>
 
         <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:id="@+id/rl_location"
                         android:layout_below="@id/rl_datetime">
 
 
@@ -68,6 +69,10 @@
 
         </RelativeLayout>
 
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/btn_save"
+                android:layout_below="@id/rl_location"
+        />
 
     </RelativeLayout>
 </ScrollView>

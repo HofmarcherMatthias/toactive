@@ -27,6 +27,8 @@ import com.gmail.hofmarchermatthias.toactive.edit.EditSampleFragment
 import com.gmail.hofmarchermatthias.toactive.list.ListFragment
 import com.gmail.hofmarchermatthias.toactive.map.MapFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -35,8 +37,8 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ListFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener, AboutFragment.OnFragmentInteractionListener,EditSampleFragment.OnFragmentInteractionListener,
-    FirebaseAuth.AuthStateListener {
+    ListFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener, AboutFragment.OnFragmentInteractionListener,EditSampleFragment.OnFragmentInteractionListener
+    {
     private lateinit var navView: NavigationView
 
 
@@ -50,6 +52,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Use Timestamps instead of Util.date
+        FirebaseFirestore.getInstance().firestoreSettings = FirebaseFirestoreSettings.Builder().setTimestampsInSnapshotsEnabled(true).build()
+
+        //Firebase-Auth
+        handleAuthentication()
+
+
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -65,7 +75,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-        FirebaseAuth.getInstance().addAuthStateListener(this)
     }
 
     private fun handleAuthentication() {
@@ -80,20 +89,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
     }
 
-    /**
-     * Gets called at the Beginning, therefore we don't need explicit handleAuth call in onCreate
-     */
-    override fun onAuthStateChanged(p0: FirebaseAuth) {
-        if(p0.currentUser != null){
-            navView.getHeaderView(0).tv_nav_email.text = p0.currentUser!!.email
-            navView.getHeaderView(0).tv_nav_user.text = p0.currentUser!!.displayName
-            Glide.with(this).load(p0.currentUser?.photoUrl.toString()).into(navView.getHeaderView(0).imgv_nav_picture)
-        }else{
-            handleAuthentication()
-        }
-
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -105,9 +100,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun onAuthResult(resultCode: Int, data: Intent?) {
         //val response = IdpResponse.fromResultIntent(data)
         if(resultCode== Activity.RESULT_OK){
+            val firebaeAuth = FirebaseAuth.getInstance()
             Log.d(TAG, "Signed in")
+            navView.getHeaderView(0).tv_nav_email.text = firebaeAuth.currentUser!!.email
+            navView.getHeaderView(0).tv_nav_user.text = firebaeAuth.currentUser!!.displayName
+            Glide.with(this).load(firebaeAuth.currentUser!!.photoUrl.toString()).into(navView.getHeaderView(0).imgv_nav_picture)
         }else{
             Log.e(TAG, "Could not log in User")
+            finish()
         }
     }
 
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
+            R.id.nav_list -> {
                 Navigation.findNavController(nav_host_fragment.view!!).navigate(R.id.action_global_listFragment)
             }
             R.id.nav_map->{

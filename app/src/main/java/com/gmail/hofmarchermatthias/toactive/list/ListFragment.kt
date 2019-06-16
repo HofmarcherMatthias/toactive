@@ -24,10 +24,6 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -41,22 +37,15 @@ private const val ARG_PARAM2 = "param2"
 class ListFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    //endregion params
     //region database
     private val db = FirebaseFirestore.getInstance()
     private val notebookRef = db.collection("Users")
         //.document(FirebaseAuth.getInstance().currentUser?.uid ?: "TestUser")
-        .document("TestUser")
+        .document(FirebaseAuth.getInstance().uid!!)
         .collection("Data")
     //endregion database
 
     private lateinit var appointmentAdapter: AppointmentAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,11 +60,21 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fab_add_appointment.setOnClickListener {
-            Toast.makeText(this.context, "Feature not implemented", Toast.LENGTH_LONG).show()
+            this.editAppointment("")
         }
 
 
         setUpRecyclerView()
+    }
+
+    /**
+     * Function invokes EditSampleFragment
+     * @param id can be passed to edit existing document instead of creating new one
+     */
+    private fun editAppointment(id: String) {
+        val editSampleFragment = EditSampleFragment.newInstance(id)
+        editSampleFragment.setTargetFragment(this@ListFragment, 1)
+        editSampleFragment.show(fragmentManager!!, "EditSampleFragment")
     }
 
     override fun onStart() {
@@ -103,18 +102,8 @@ class ListFragment : Fragment() {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
      *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
      */
-
-
     private fun setUpRecyclerView(){
         val query = notebookRef
             .orderBy("timestamp", Query.Direction.ASCENDING)
@@ -149,23 +138,13 @@ class ListFragment : Fragment() {
         appointmentAdapter.onItemClickListener=(object :
             AppointmentAdapter.OnItemClickListener {
             override fun onItemClick(documentSnapshot: DocumentSnapshot, position: Int) {
+
                 val id = documentSnapshot.id
-
-                val editSampleFragment = EditSampleFragment.newInstance(documentSnapshot.reference.path)
-                editSampleFragment.setTargetFragment(this@ListFragment, 1)
-                editSampleFragment.show(fragmentManager!!, "EditSampleFragment")
-
-                //Toast.makeText(parentFragment?.context, "Not supported yet", Toast.LENGTH_LONG).show()
-
-
-                /*bundle.putString("path", path)
-                bundle.putString("id", id)
-                val intent = Intent(context, AppointmentSample::class.java)
-                intent.putExtras(bundle)
-                startActivity(intent)*/
+                editAppointment(id)
             }
         })
     }
+
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)

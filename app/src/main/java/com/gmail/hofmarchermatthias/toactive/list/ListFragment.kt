@@ -1,6 +1,7 @@
 package com.gmail.hofmarchermatthias.toactive.list
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -134,7 +135,12 @@ class ListFragment : Fragment() {
                     }
                     ItemTouchHelper.RIGHT->{
                         val appointment = appointmentAdapter.getItem(viewHolder.adapterPosition)
+                        val shareIntent = Intent(Intent.ACTION_SEND)
+                        shareIntent.type = "text/plain"
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "I am better than you")
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, appointment.description)
 
+                        startActivity(Intent.createChooser(shareIntent, "Share this Information"))
                     }
                 }
             }

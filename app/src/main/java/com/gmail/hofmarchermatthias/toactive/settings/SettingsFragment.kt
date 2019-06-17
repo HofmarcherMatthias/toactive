@@ -31,9 +31,7 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        btn_signout.setOnClickListener{
-            FirebaseAuth.getInstance().signOut()
-        }
+
     }
 
     override fun onCreateView(
@@ -44,6 +42,13 @@ class SettingsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btn_signout.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+        }
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {

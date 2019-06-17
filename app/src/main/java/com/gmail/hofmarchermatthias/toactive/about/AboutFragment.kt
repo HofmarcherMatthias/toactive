@@ -16,7 +16,6 @@ import com.gmail.hofmarchermatthias.toactive.R
  * to handle interaction events.
  * Use the [AboutFragment.newInstance] factory method to
  * create an instance of this fragment.
- *
  */
 class AboutFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null

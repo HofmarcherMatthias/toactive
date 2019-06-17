@@ -15,13 +15,13 @@ class AppointmentAdapter(firestoreRecyclerOptions: FirestoreRecyclerOptions<Appo
     : FirestoreRecyclerAdapter<Appointment,
         AppointmentAdapter.AppointmentHolder>(firestoreRecyclerOptions)
 {
-    lateinit var onItemClickListener: OnItemClickListener get set
+    lateinit var onItemClickListener: OnItemClickListener
 
 
     override fun onBindViewHolder(holder: AppointmentHolder, position: Int, model: Appointment) {
         holder.itemView.tv_title.text = model.title
         holder.itemView.tv_description.text = model.description
-        holder.itemView.tv_timestamp.text = model.timestamp.seconds.toString()
+        holder.itemView.tv_timestamp.text = model.timestamp.toDate().toString()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): AppointmentHolder {

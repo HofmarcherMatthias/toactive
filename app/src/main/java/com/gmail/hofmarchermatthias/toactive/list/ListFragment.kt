@@ -1,14 +1,12 @@
 package com.gmail.hofmarchermatthias.toactive.list
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -126,11 +124,19 @@ class ListFragment : Fragment() {
 
         ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                return false
             }
 
-            override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
-                appointmentAdapter.deleteItem(p0.adapterPosition)
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, p1: Int) {
+                when(p1){
+                    ItemTouchHelper.LEFT->{
+                        appointmentAdapter.deleteItem(viewHolder.adapterPosition)
+                    }
+                    ItemTouchHelper.RIGHT->{
+                        val appointment = appointmentAdapter.getItem(viewHolder.adapterPosition)
+
+                    }
+                }
             }
         }).attachToRecyclerView(recycler_view)
 

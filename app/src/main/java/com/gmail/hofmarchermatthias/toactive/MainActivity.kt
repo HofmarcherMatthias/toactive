@@ -5,8 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -16,12 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
-import com.firebase.ui.auth.data.model.User
 import com.gmail.hofmarchermatthias.toactive.about.AboutFragment
 import com.gmail.hofmarchermatthias.toactive.edit.EditSampleFragment
 import com.gmail.hofmarchermatthias.toactive.home.HomeFragment
@@ -32,9 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import java.util.*
 
@@ -103,11 +96,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun onAuthResult(resultCode: Int, data: Intent?) {
         //val response = IdpResponse.fromResultIntent(data)
         if (resultCode == Activity.RESULT_OK) {
-            val firebaeAuth = FirebaseAuth.getInstance()
+            val firebaseAuth = FirebaseAuth.getInstance()
             Log.d(TAG, "Signed in")
-            nav_view.getHeaderView(0).tv_nav_email.text = firebaeAuth.currentUser!!.email
-            nav_view.getHeaderView(0).tv_nav_user.text = firebaeAuth.currentUser!!.displayName
-            Glide.with(this).load(firebaeAuth.currentUser!!.photoUrl.toString())
+            nav_view.getHeaderView(0).tv_nav_email.text = firebaseAuth.currentUser!!.email
+            nav_view.getHeaderView(0).tv_nav_user.text = firebaseAuth.currentUser!!.displayName
+            Glide.with(this).load(firebaseAuth.currentUser!!.photoUrl.toString())
                 .into(nav_view.getHeaderView(0).imgv_nav_picture)
         } else {
             Log.e(TAG, "Could not log in User")
